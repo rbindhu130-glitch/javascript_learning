@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add / Remove Product</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f3f6;
+      padding: 20px;
+    }
+
+    button {
+      padding: 10px 16px;
+      background: #2874f0;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+
+    .remove-btn {
+      background: #dc3545;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .price {
+      color: green;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .desc {
+      font-size: 14px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button onclick="addCard()">Add Product</button>
+  <button class="remove-btn" onclick="removeCard()">Remove Product</button>
+
+  <div class="grid" id="cardContainer"></div>
+
+  <script>
+    const products = [
+      {
+        image: "https://m.media-amazon.com/images/I/61CGHv6kmWL._SL1500_.jpg",
+        price: "₹15,999",
+        description: "Wireless Bluetooth Headphones"
+      },
+      {
+        image: "https://m.media-amazon.com/images/I/61ZjlBOp+rL._SL1500_.jpg",
+        price: "₹29,999",
+        description: "Smart Watch with Heart Rate Monitor"
+      },
+      {
+        image: "https://m.media-amazon.com/images/I/51N2u2q+P0L._SL1500_.jpg",
+        price: "₹9,999",
+        description: "Noise Cancelling Earbuds"
+      },
+      {
+        image: "https://m.media-amazon.com/images/I/71ZOtNdaZCL._SL1500_.jpg",
+        price: "₹18,499",
+        description: "Samsung Galaxy Smartphone"
+      },
+      {
+        image: "https://m.media-amazon.com/images/I/71TPda7cwUL._SL1500_.jpg",
+        price: "₹24,999",
+        description: "Realme Android Smartphone"
+      },
+      {
+        image: "https://m.media-amazon.com/images/I/61l9ppRIiqL._SL1500_.jpg",
+        price: "₹3,499",
+        description: "Bluetooth Neckband Earphones"
+      },
+      {
+        image: "https://m.media-amazon.com/images/I/61XZQXFQeVL._SL1500_.jpg",
+        price: "₹1,299",
+        description: "Wireless Mouse"
+      },
+      {
+        image: "https://m.media-amazon.com/images/I/61mpMH5TzkL._SL1500_.jpg",
+        price: "₹2,499",
+        description: "Mechanical Keyboard"
+      },
+      {
+        image: "https://m.media-amazon.com/images/I/71bhWgQK-cL._SL1500_.jpg",
+        price: "₹54,999",
+        description: "Laptop for Programming"
+      },
+      {
+        image: "https://m.media-amazon.com/images/I/61UxfXTUyvL._SL1500_.jpg",
+        price: "₹7,999",
+        description: "Portable Bluetooth Speaker"
+      }
+    ];
+
+    let index = 0;
+
+    function addCard() {
+      if (index >= products.length) {
+        alert("All products added!");
+        return;
+      }
+
+      const container = document.getElementById("cardContainer");
+      const product = products[index];
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <img src="${product.image}" alt="product">
+        <p class="price">${product.price}</p>
+        <p class="desc">${product.description}</p>
+      `;
+
+      container.appendChild(card);
+      index++;
+    }
+
+    function removeCard() {
+      const container = document.getElementById("cardContainer");
+
+      if (container.lastElementChild) {
+        container.removeChild(container.lastElementChild);
+        index--;
+      } else {
+        alert("No products to remove!");
+      }
+    }
+  </script>
+
+</body>
+</html>

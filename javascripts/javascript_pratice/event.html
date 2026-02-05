@@ -1,0 +1,20 @@
+<h1 id="btn">
+    Hello World
+</h1>
+<button onclick="change()">click</button>
+
+<script>
+    var btn = document.getElementById("btn");
+    console.log(btn.textContent);
+
+    function change()
+    {
+    btn.textContent = "Bye World";
+
+    }
+</script>
+
+
+document.getElementById("close").onclick = function () {
+  modal.style.display = "none";
+}

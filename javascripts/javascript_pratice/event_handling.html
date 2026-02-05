@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>add_event_listener</title>
+  </head>
+  <body>
+    <div id="container">
+        <button id="add_product">Add</button>
+    </div>
+    <script>
+        const product ="https://m.media-amazon.com/images/I/610ub5kytVL._AC_UF1000,1000_QL80_.jpg"
+
+        const products = document.getElementById("add_product")
+        const container = document.getElementById("container")
+        add_product.addEventListener("click", ()=>{
+            const img = document.createElement("img");
+            img.src=product;
+            img.style.width-"150px";
+            img.style.height="150px";
+
+            container.appendChild(img);
+        });
+
+    </script>
+  </body>
+</html>
+

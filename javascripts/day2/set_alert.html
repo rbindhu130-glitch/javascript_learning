@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>set_alarm</title>
+  </head>
+  <body>
+    <input id="sec" type="number" />
+    <br><br>
+    <button id="SetAlert">Start</button>
+
+    <script>
+      let btn = document.getElementById("SetAlert");
+      let timer;
+
+      btn.addEventListener("click", () => {
+        let input = document.getElementById("sec");
+        let time = Number(input.value);
+
+        time=time--;
+        input.value = time;
+
+        timer = setInterval(() => {
+          time--;
+          input.value = time;
+
+          if (time <= 0) {
+            clearInterval(timer);
+            alert("Time Up!");
+          }
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Append</title>
+  </head>
+  <body>
+    <form id="myForm">
+      <p>name: <input id="name" type="text" placeholder="name" /></p>
+      <p>age: <input id="age" type="number" placeholder="age" /></p>
+      <p>skill: <input id="skill" type="text" placeholder="skill" /></p>
+      <button type="button" id="addBtn">Add</button>
+    </form>
+
+    <br />
+
+    <table id="table">
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Skill</th>
+      </tr>
+    </table>
+
+    <script>
+      document.getElementById("addBtn").addEventListener("click", addData);
+
+      function addData() {
+        var name = document.getElementById("name").value;
+        var age = document.getElementById("age").value;
+        var skill = document.getElementById("skill").value;
+
+        document.getElementById("table").insertRow().innerHTML =
+          `<td>${name}</td><td>${age}</td><td>${skill}</td>`;
+
+        document.getElementById("myForm").reset();
+
+        console.log({ name, age, skill });
+      }
+    </script>
+  </body>
+</html>

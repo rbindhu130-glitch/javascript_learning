@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM Manipulation Example</title>
+  <style>
+    *body div{
+        background-color: rgba(137, 43, 226, 0.721);
+    }
+
+    .box-style {
+      width: 100px;
+      height: 100px;
+      background-color: rgb(55, 162, 55);
+      margin: 10px 0;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>DOM Manipulation</h1>
+    <button id="addBox">Add Box</button>
+    <button id="removeBox">Remove Box</button>
+  </div>
+
+  <script>
+    const container = document.querySelector(".container");
+
+    // Adding new elements with createElement and appendChild
+    const addBoxButton = document.getElementById("addBox");
+    addBoxButton.addEventListener("click", () => {
+      const newBox = document.createElement("div");
+      newBox.textContent = "New Box";
+      newBox.classList.add("box-style");
+      container.appendChild(newBox);
+    });
+
+    // Removing elements with removeChild
+    const removeBoxButton = document.getElementById("removeBox");
+    removeBoxButton.addEventListener("click", () => {
+      const lastBox = document.querySelector(".box-style:last-child");
+      if (lastBox) {
+        container.removeChild(lastBox);
+      } else {
+        alert("No boxes left to remove!");
+      }
+    });
+
+    // Setting attributes dynamically
+    const link = document.createElement("a");
+    link.textContent = "Visit Example!";
+    link.setAttribute("href", "https://www.example.com");
+    container.appendChild(link);
+  </script>
+</body>
+</html>

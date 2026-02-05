@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Append</title>
+</head>
+<body>
+
+  <p>Name: <input id="name" type="text" /></p>
+  <p>Age: <input id="age" type="number" /></p>
+  <p>Skill: <input id="skill" type="text" /></p>
+
+  <button id="addBtn">Add</button>
+
+  <table border="1" id="table">
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Skill</th>
+    </tr>
+  </table>
+
+  <script>
+    document.getElementById("addBtn").addEventListener("click", addData);
+
+    function addData() {
+      var name = document.getElementById("name").value;
+      var age = document.getElementById("age").value;
+      var skill = document.getElementById("skill").value;
+
+      var table = document.getElementById("table");
+      var row = table.insertRow();
+
+      row.insertCell(0).innerHTML = name;
+      row.insertCell(1).innerHTML = age;
+      row.insertCell(2).innerHTML = skill;
+
+      // input clear panna
+      document.getElementById("name").value = "";
+      document.getElementById("age").value = "";
+      document.getElementById("skill").value = "";
+    }
+  </script>
+
+</body>
+</html>

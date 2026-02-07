@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 5 - Advanced To-Do List</title>
+    <style>
+        /* Modern Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        /* Glassmorphism Card Effect */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4a4a4a;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Input Area Styling */
+        .input-group {
+            display: flex;
+            margin-bottom: 25px;
+            position: relative;
+            gap: 10px;
+        }
+
+        #taskInput {
+            flex-grow: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        #taskInput:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 8px rgba(118, 75, 162, 0.2);
+        }
+
+        #addBtn {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
+        }
+
+        #addBtn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+
+        /* List Styling */
+        ul {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Scrollbar Styling */
+        ul::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ul::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 10px;
+        }
+
+        li {
+            background: #fff;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            border-left: 5px solid #667eea;
+        }
+
+        li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        li span {
+            font-size: 16px;
+            word-break: break-all;
+            flex: 1;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        /* Completed Task Style */
+        li.completed span {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        li.completed {
+            background: #f4f4f4;
+            border-left-color: #2ecc71;
+            opacity: 0.8;
+        }
+
+        /* Action Buttons Container */
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Common Button Styles */
+        .btn-icon {
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Edit Button */
+        .edit-btn {
+            background-color: #f1c40f;
+            /* Yellow */
+            color: #fff;
+        }
+
+        .edit-btn:hover {
+            background-color: #f39c12;
+            transform: scale(1.1);
+        }
+
+        /* Delete Button */
+        .delete-btn {
+            background-color: #ff5e57;
+            /* Red */
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff3b30;
+            transform: scale(1.1);
+        }
+
+        /* Empty State */
+        .empty-message {
+            text-align: center;
+            color: #888;
+            margin-top: 20px;
+            font-style: italic;
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInList {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInList 0.4s ease-out forwards;
+        }
+    </style>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>🚀 My Task Manager</h2>
+
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Add a new task..." autofocus>
+            <button id="addBtn">Add Task</button>
+        </div>
+
+        <ul id="taskList">
+            <!-- Tasks will be added here dynamically -->
+        </ul>
+
+        <p class="empty-message" id="emptyMsg">No tasks yet. Start your day!</p>
+    </div>
+
+    <!-- Custom Modal Overlay -->
+    <div id="customModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 id="modalTitle">Notice</h3>
+            <p id="modalMsg">Message goes here</p>
+
+            <!-- Input for Edit Mode -->
+            <input type="text" id="modalInput" placeholder="Type here..." autocomplete="off">
+
+            <div class="modal-buttons">
+                <button id="modalCancel" class="btn-cancel">Cancel</button>
+                <button id="modalOk" class="btn-confirm">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Custom Modal Styles */
+        .modal-overlay {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            /* Dim background */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: popIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-box h3 {
+            margin-bottom: 10px;
+            color: #4a4a4a;
+        }
+
+        .modal-box p {
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 15px;
+        }
+
+        #modalInput {
+            display: none;
+            /* Show only for prompts */
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        #modalInput:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-confirm {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-cancel {
+            background: #f1f1f1;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            /* Show only for prompts */
+        }
+    </style>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const addBtn = document.getElementById('addBtn');
+        const taskList = document.getElementById('taskList');
+        const emptyMsg = document.getElementById('emptyMsg');
+
+        // Modal Elements
+        const modalOverlay = document.getElementById('customModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMsg = document.getElementById('modalMsg');
+        const modalInput = document.getElementById('modalInput');
+        const modalOk = document.getElementById('modalOk');
+        const modalCancel = document.getElementById('modalCancel');
+
+        let currentModalCallback = null;
+
+        checkEmpty();
+
+        // --- Custom Alert Function ---
+        function showCustomAlert(title, message) {
+            modalTitle.innerText = title;
+            modalMsg.innerText = message;
+            modalInput.style.display = 'none';
+            modalCancel.style.display = 'none';
+            modalOverlay.style.display = 'flex';
+
+            // Clean up old listener
+            const newOk = modalOk.cloneNode(true);
+            modalOk.parentNode.replaceChild(newOk, modalOk);
+
+            newOk.addEventListener('click', () => {
+                modalOverlay.style.display = 'none';
+            });
+        }
+
+        // --- Custom Prompt Function (For Edit) ---
+        function showCustomPrompt(title, message, initialValue, callback) {
+            modalTitle.innerText = title;
+            modalMsg.innerText = message;
+            modalInput.value = initialValue;
+            modalInput.style.display = 'block';
+            modalCancel.style.display = 'block';
+            modalOverlay.style.display = 'flex';
+            modalInput.focus();
+
+            // Handle OK
+            const newOk = modalOk.cloneNode(true);
+            modalOk.parentNode.replaceChild(newOk, modalOk);
+
+            newOk.addEventListener('click', () => {
+                const val = modalInput.value;
+                modalOverlay.style.display = 'none';
+                if (callback) callback(val);
+            });
+
+            // Handle Cancel
+            const newCancel = modalCancel.cloneNode(true);
+            modalCancel.parentNode.replaceChild(newCancel, modalCancel);
+
+            newCancel.addEventListener('click', () => {
+                modalOverlay.style.display = 'none';
+            });
+        }
+
+        // Regex for letters & spaces
+        function isValidInput(text) {
+            return /^[a-zA-Z\s]+$/.test(text);
+        }
+
+        function addTask() {
+            const taskText = taskInput.value.trim();
+
+            if (taskText === "") {
+                showCustomAlert("⚠️ Oops!", "Please write something!");
+                return;
+            }
+
+            // Validation
+            if (!isValidInput(taskText)) {
+                showCustomAlert("🚫 Invalid Input", "Please enter only text (no numbers or special symbols)!");
+                return;
+            }
+
+            const li = document.createElement('li');
+            li.classList.add('fade-in');
+
+            const span = document.createElement('span');
+            span.textContent = taskText;
+
+            span.addEventListener('click', () => {
+                li.classList.toggle('completed');
+            });
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'actions';
+
+            // Edit Button ✏️
+            const editBtn = document.createElement('button');
+            editBtn.innerHTML = '✏️';
+            editBtn.className = 'btn-icon edit-btn';
+
+            editBtn.onclick = function () {
+                const currentText = span.textContent;
+
+                // Use Custom Prompt instead of window.prompt
+                showCustomPrompt("✏️ Edit Task", "Update your task below (Text only):", currentText, function (newText) {
+                    if (newText !== null) {
+                        const trimmedText = newText.trim();
+                        if (trimmedText === "") return;
+
+                        if (!isValidInput(trimmedText)) {
+                            showCustomAlert("🚫 Error", "Invalid input! Only text allowed.");
+                            return;
+                        }
+
+                        span.textContent = trimmedText;
+                        li.classList.remove('completed');
+                    }
+                });
+            };
+
+            // Delete Button 🗑️
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = '🗑️';
+            deleteBtn.className = 'btn-icon delete-btn';
+
+            deleteBtn.onclick = function () {
+                // Since confirm() is also native, let's make a quick custom confirm using logic or just stick to simple delete for now to keep code simple.
+                // Or better, use our Alert styled as confirm? 
+                // Let's keep it simple: Just delete with a small transition, or use standard confirm if user strictly wants no modals. 
+                // But user hates native boxes. Let's just delete smoothly without confirm for now (faster UI) OR generic confirm.
+                // Let's do a direct delete for smoother UX.
+
+                li.style.transform = "translateX(50px)";
+                li.style.opacity = "0";
+                setTimeout(() => {
+                    li.remove();
+                    checkEmpty();
+                }, 300);
+            };
+
+            actionsDiv.appendChild(editBtn);
+            actionsDiv.appendChild(deleteBtn);
+
+            li.appendChild(span);
+            li.appendChild(actionsDiv);
+
+            taskList.prepend(li);
+            taskInput.value = "";
+            checkEmpty();
+        }
+
+        function checkEmpty() {
+            if (taskList.children.length === 0) {
+                emptyMsg.style.display = 'block';
+            } else {
+                emptyMsg.style.display = 'none';
+            }
+        }
+
+        addBtn.addEventListener('click', addTask);
+
+        taskInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -17,13 +17,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: #020024;
-        background: linear-gradient(
-          90deg,
-          rgba(2, 0, 36, 1) 0%,
-          rgba(4, 76, 148, 1) 0%,
-          rgba(0, 212, 255, 1) 100%
-        );
+        background: #F8F8F8; /* Off-White */
       }
 
       .clock-box {
@@ -31,27 +25,28 @@
       }
 
       .title {
-        color: white;
-        font-size: 0.9rem;
+        color: #666666;
+        font-size: 0.85rem;
         letter-spacing: 3px;
         margin-bottom: 12px;
+        text-transform: uppercase;
       }
 
       .clock {
-        background: #65a2f7;
-        color: #e5e7eb;
-        padding: 28px 56px;
+        background: #FFFFFF;
+        color: #333333; /* Dark Grey digits */
+        padding: 30px 60px;
         border-radius: 10px;
-        font-size: 46px;
+        font-size: 48px;
         letter-spacing: 4px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
       }
     </style>
   </head>
 
   <body>
     <div class="clock-box">
-      <div class="title">DIGITAL CLOCK</div>
+      <div class="title">Digital Clock</div>
       <div class="clock" id="clock">00:00:00</div>
     </div>
 
@@ -67,7 +62,8 @@
         m = m < 10 ? "0" + m : m;
         s = s < 10 ? "0" + s : s;
 
-        document.getElementById("clock").innerText = h + ":" + m + ":" + s;
+        document.getElementById("clock").innerText =
+          h + ":" + m + ":" + s;
       }
 
       setInterval(updateClock, 1000);

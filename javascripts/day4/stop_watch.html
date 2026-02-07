@@ -18,40 +18,47 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: #0b0b0b; /* Matte Black */
     }
 
     .stopwatch {
-      background: #111827;
+      background: #0f0f0f;;
       width: 340px;
       padding: 35px 25px;
       border-radius: 28px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+      box-shadow: 0 25px 50px rgba(255, 49, 49, 0.25);
       text-align: center;
-      color: #fff;
+      color: #ffffff;
     }
 
     .title {
       font-size: 1.6rem;
       margin-bottom: 20px;
       letter-spacing: 1.5px;
+      color: #ff3131; /* Neon Red */
     }
 
-    /* Circle */
     .circle {
-      width: 240px;
-      height: 240px;
+      width: 280px;
+      height: 280px;
       border-radius: 50%;
-      border: 3px solid #8b9cff;
+      border: 3px solid #ff3131;
       display: flex;
       justify-content: center;
       align-items: center;
       margin: 0 auto 25px;
+      box-shadow: 0 0 20px rgba(255, 49, 49, 0.6);
     }
 
     .time {
-      font-size: 1.8rem;
+      font-size: 1.9rem;
       letter-spacing: 2px;
+      color: #ff3131;
+    }
+
+    #milliseconds {
+      font-size: 1.7rem;
+      color: #ffffff;
     }
 
     .controls {
@@ -66,23 +73,24 @@
       border-radius: 50%;
       border: none;
       cursor: pointer;
-      font-size: 1rem;
-      background: #1f2937;
-      color: #e5e7eb;
+      font-size: 1.1rem;
+      background: #1f1f1f;
+      color: #ffffff;
       transition: 0.3s;
     }
 
     .btn:hover {
-      background: #8b9cff;
-      color: #111827;
-      transform: scale(1.05);
+      background: #ff3131;
+      color: #121212;
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(255, 49, 49, 0.8);
     }
   </style>
 </head>
 
 <body>
   <div class="stopwatch">
-    <div class="title">Stopwatch</div>
+    <div class="title">STOPWATCH</div>
 
     <div class="circle">
       <div class="time">
@@ -101,9 +109,18 @@
   </div>
 
   <script>
-    let [hours, minutes, seconds, milliseconds] = [0, 0, 0, 0];
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+    let milliseconds = 0;
+
     let timer = null;
     let running = false;
+
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+    const millisecondsEl = document.getElementById("milliseconds");
 
     function updateDisplay() {
       hoursEl.innerText = String(hours).padStart(2, "0");
@@ -111,11 +128,6 @@
       secondsEl.innerText = String(seconds).padStart(2, "0");
       millisecondsEl.innerText = String(milliseconds).padStart(2, "0");
     }
-
-    const hoursEl = document.getElementById("hours");
-    const minutesEl = document.getElementById("minutes");
-    const secondsEl = document.getElementById("seconds");
-    const millisecondsEl = document.getElementById("milliseconds");
 
     function stopwatch() {
       milliseconds++;
@@ -148,7 +160,7 @@
 
     document.getElementById("stop").addEventListener("click", () => {
       clearInterval(timer);
-      [hours, minutes, seconds, milliseconds] = [0, 0, 0, 0];
+      hours = minutes = seconds = milliseconds = 0;
       running = false;
       updateDisplay();
     });

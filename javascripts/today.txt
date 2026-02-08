@@ -9,3 +9,4 @@ Learned if else
 Practiced loops
 Learned functions
 Practiced arrays
+Practice completed for today

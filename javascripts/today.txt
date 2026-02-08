@@ -6,3 +6,4 @@ Practiced let and const
 Learned data types
 Practiced operators
 Learned if else
+Practiced loops

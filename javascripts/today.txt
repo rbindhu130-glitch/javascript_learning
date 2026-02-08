@@ -4,3 +4,4 @@ Practice started
 Learned variables
 Practiced let and const
 Learned data types
+Practiced operators

@@ -7,3 +7,4 @@ Learned data types
 Practiced operators
 Learned if else
 Practiced loops
+Learned functions

@@ -1,81 +1,187 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>game</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "poppins", sans-serif;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic Tac Toe Game</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      background-color: #2f3542;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+    }
+
+    .box {
+      width: 100px;
+      height: 100px;
+      border: 2px solid #eccc68;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .box img {
+      width: 60px;
+      height: 60px;
+    }
+
+    #status {
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    button {
+      width: 150px;
+      height: 40px;
+      font-size: 18px;
+      color: white;
+      background-color: #ff4757;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .win {
+      animation: winAnimation 1s infinite alternate;
+    }
+
+    @keyframes winAnimation {
+      from {
+        background-color: #2c3a47;
       }
-      body {
-        width: 100vw;
-        height: 100vh;
-        background-color: #2f3542;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
+      to {
+        background-color: #130f40;
       }
-      .container {
-        display: grid;
-        grid-template-columns: repeat(3, auto);
-      }
-      .box {
-        width: 100px;
-        height: 100px;
-        border: 2px solid #eccc68;
-        box-shadow:
-          0,
-          0,
-          0,
-          2px #eccc68;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        font-size: 25px;
-      }
-      #status {
-        padding: 20px;
-        font-size: 25px;
-        font-weight: 500;
-      }
-      button{
-        width: 150px;
-        height: 40px;
-        font-size: 18px;
-        color: white;
-        background-color: #ff4757;
-        border: none;
-        border-radius: 8px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div data-index="0" class="box">0</div>
-      <div data-index="1" class="box">1</div>
-      <div data-index="2" class="box">2</div>
-      <div data-index="3" class="box">3</div>
-      <div data-index="4" class="box">4</div>
-      <div data-index="5" class="box">5</div>
-      <div data-index="6" class="box">6</div>
-      <div data-index="7" class="box">7</div>
-      <div data-index="8" class="box">8</div>
-    </div>
-    <div id="status">Play Now</div>
-    <button id="restart">Restart</button>
-  </body>
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="box" data-index="0"></div>
+    <div class="box" data-index="1"></div>
+    <div class="box" data-index="2"></div>
+    <div class="box" data-index="3"></div>
+    <div class="box" data-index="4"></div>
+    <div class="box" data-index="5"></div>
+    <div class="box" data-index="6"></div>
+    <div class="box" data-index="7"></div>
+    <div class="box" data-index="8"></div>
+  </div>
+
+  <div id="status">X Your Turn</div>
+  <button id="restart">Restart</button>
+
   <script>
     const boxes = document.querySelectorAll(".box");
-    const status = document.querySelector("#status")
-    const btnRestart = document.querySelector("#restart")
-    
-    let x="<img src='"
+    const statusTxt = document.getElementById("status");
+    const restartBtn = document.getElementById("restart");
+
+    const xImg = "<img src='./image/x.png'>";
+    const oImg = "<img src='./image/o.png'>";
+
+    const winPatterns = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let currentPlayer = "x";
+    let running = true;
+
+    init();
+
+    function init() {
+      boxes.forEach(box => box.addEventListener("click", boxClick));
+      restartBtn.addEventListener("click", restartGame);
+      statusTxt.textContent = "X Your Turn";
+    }
+
+    function boxClick() {
+      const index = this.dataset.index;
+
+      if (board[index] !== "" || !running) return;
+
+      board[index] = currentPlayer;
+      this.innerHTML = currentPlayer === "x" ? xImg : oImg;
+
+      checkWinner();
+    }
+
+    function checkWinner() {
+      let won = false;
+
+      for (let pattern of winPatterns) {
+        const [a, b, c] = pattern;
+
+        if (
+          board[a] &&
+          board[a] === board[b] &&
+          board[b] === board[c]
+        ) {
+          won = true;
+          boxes[a].classList.add("win");
+          boxes[b].classList.add("win");
+          boxes[c].classList.add("win");
+          break;
+        }
+      }
+
+      if (won) {
+        statusTxt.textContent = `${currentPlayer.toUpperCase()} Won 🎉`;
+        running = false;
+      } else if (!board.includes("")) {
+        statusTxt.textContent = "Game Draw 😐";
+        running = false;
+      } else {
+        changePlayer();
+      }
+    }
+
+    function changePlayer() {
+      currentPlayer = currentPlayer === "x" ? "o" : "x";
+      statusTxt.textContent = `${currentPlayer.toUpperCase()} Your Turn`;
+    }
+
+    function restartGame() {
+      board = ["", "", "", "", "", "", "", "", ""];
+      currentPlayer = "x";
+      running = true;
+      statusTxt.textContent = "X Your Turn";
+
+      boxes.forEach(box => {
+        box.innerHTML = "";
+        box.classList.remove("win");
+      });
+    }
   </script>
+
+</body>
 </html>

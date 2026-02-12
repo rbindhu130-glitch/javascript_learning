@@ -1,169 +1,168 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stopwatch</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stopwatch</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
 
-    body {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #0b0b0b; /* Matte Black */
-    }
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #0b0b0b;
+      }
 
-    .stopwatch {
-      background: #0f0f0f;;
-      width: 340px;
-      padding: 35px 25px;
-      border-radius: 28px;
-      box-shadow: 0 25px 50px rgba(255, 49, 49, 0.25);
-      text-align: center;
-      color: #ffffff;
-    }
+      .stopwatch {
+        background: #0f0f0f;
+        width: 340px;
+        padding: 35px 25px;
+        border-radius: 28px;
+        box-shadow: 0 0 70px rgba(255, 69, 69, 0.53);
+        text-align: center;
+        color: #ffffff;
+      }
 
-    .title {
-      font-size: 1.6rem;
-      margin-bottom: 20px;
-      letter-spacing: 1.5px;
-      color: #ff3131; /* Neon Red */
-    }
+      .title {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+        letter-spacing: 1.5px;
+        color: #ff3131; /* Neon Red */
+      }
 
-    .circle {
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      border: 3px solid #ff3131;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 auto 25px;
-      box-shadow: 0 0 20px rgba(255, 49, 49, 0.6);
-    }
+      .circle {
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        border: 3px solid #ff3131;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 25px;
+        box-shadow: 0 0 20px rgba(216, 36, 36, 0.6);
+      }
 
-    .time {
-      font-size: 1.9rem;
-      letter-spacing: 2px;
-      color: #ff3131;
-    }
+      .time {
+        font-size: 1.9rem;
+        letter-spacing: 2px;
+        color: #ff3131;
+      }
 
-    #milliseconds {
-      font-size: 1.7rem;
-      color: #ffffff;
-    }
+      #milliseconds {
+        font-size: 1.7rem;
+        color: #ffffff;
+      }
 
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 15px;
-    }
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+      }
 
-    .btn {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-      font-size: 1.1rem;
-      background: #1f1f1f;
-      color: #ffffff;
-      transition: 0.3s;
-    }
+      .btn {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1rem;
+        background: #1f1f1f;
+        color: #ffffff;
+        transition: 0.3s;
+      }
 
-    .btn:hover {
-      background: #ff3131;
-      color: #121212;
-      transform: scale(1.1);
-      box-shadow: 0 0 15px rgba(255, 49, 49, 0.8);
-    }
-  </style>
-</head>
+      .btn:hover {
+        background: #ff3131;
+        color: #121212;
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(255, 49, 49, 0.8);
+      }
+    </style>
+  </head>
 
-<body>
-  <div class="stopwatch">
-    <div class="title">STOPWATCH</div>
+  <body>
+    <div class="stopwatch">
+      <div class="title">STOPWATCH</div>
 
-    <div class="circle">
-      <div class="time">
-        <span id="hours">00</span> :
-        <span id="minutes">00</span> :
-        <span id="seconds">00</span> :
-        <span id="milliseconds">00</span>
+      <div class="circle">
+        <div class="time">
+          <span id="hours">00</span> : <span id="minutes">00</span> :
+          <span id="seconds">00</span> :
+          <span id="milliseconds">00</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="start">▶</button>
+        <button class="btn" id="pause">⏸</button>
+        <button class="btn" id="stop">⟲</button>
       </div>
     </div>
 
-    <div class="controls">
-      <button class="btn" id="start">▶</button>
-      <button class="btn" id="pause">⏸</button>
-      <button class="btn" id="stop">⟲</button>
-    </div>
-  </div>
+    <script>
+      let hours = 0;
+      let minutes = 0;
+      let seconds = 0;
+      let milliseconds = 0;
 
-  <script>
-    let hours = 0;
-    let minutes = 0;
-    let seconds = 0;
-    let milliseconds = 0;
+      let timer = null;
+      let running = false;
 
-    let timer = null;
-    let running = false;
+      const hoursEl = document.getElementById("hours");
+      const minutesEl = document.getElementById("minutes");
+      const secondsEl = document.getElementById("seconds");
+      const millisecondsEl = document.getElementById("milliseconds");
 
-    const hoursEl = document.getElementById("hours");
-    const minutesEl = document.getElementById("minutes");
-    const secondsEl = document.getElementById("seconds");
-    const millisecondsEl = document.getElementById("milliseconds");
-
-    function updateDisplay() {
-      hoursEl.innerText = String(hours).padStart(2, "0");
-      minutesEl.innerText = String(minutes).padStart(2, "0");
-      secondsEl.innerText = String(seconds).padStart(2, "0");
-      millisecondsEl.innerText = String(milliseconds).padStart(2, "0");
-    }
-
-    function stopwatch() {
-      milliseconds++;
-      if (milliseconds === 100) {
-        milliseconds = 0;
-        seconds++;
+      function updateDisplay() {
+        hoursEl.innerText = String(hours).padStart(2, "0");
+        minutesEl.innerText = String(minutes).padStart(2, "0");
+        secondsEl.innerText = String(seconds).padStart(2, "0");
+        millisecondsEl.innerText = String(milliseconds).padStart(2, "0");
       }
-      if (seconds === 60) {
-        seconds = 0;
-        minutes++;
-      }
-      if (minutes === 60) {
-        minutes = 0;
-        hours++;
-      }
-      updateDisplay();
-    }
 
-    document.getElementById("start").addEventListener("click", () => {
-      if (!running) {
-        timer = setInterval(stopwatch, 10);
-        running = true;
+      function stopwatch() {
+        milliseconds++;
+        if (milliseconds === 100) {
+          milliseconds = 0;
+          seconds++;
+        }
+        if (seconds === 60) {
+          seconds = 0;
+          minutes++;
+        }
+        if (minutes === 60) {
+          minutes = 0;
+          hours++;
+        }
+        updateDisplay();
       }
-    });
 
-    document.getElementById("pause").addEventListener("click", () => {
-      clearInterval(timer);
-      running = false;
-    });
+      document.getElementById("start").addEventListener("click", () => {
+        if (!running) {
+          timer = setInterval(stopwatch, 10);
+          running = true;
+        }
+      });
 
-    document.getElementById("stop").addEventListener("click", () => {
-      clearInterval(timer);
-      hours = minutes = seconds = milliseconds = 0;
-      running = false;
-      updateDisplay();
-    });
-  </script>
-</body>
+      document.getElementById("pause").addEventListener("click", () => {
+        clearInterval(timer);
+        running = false;
+      });
+
+      document.getElementById("stop").addEventListener("click", () => {
+        clearInterval(timer);
+        hours = minutes = seconds = milliseconds = 0;
+        running = false;
+        updateDisplay();
+      });
+    </script>
+  </body>
 </html>

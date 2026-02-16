@@ -10,9 +10,6 @@ fetch("https://dummyjson.com/products")
       div.innerHTML=`
       <img src="${data.products[i].images[0]}" alt="">
       <h1>${data.products[i].title}</h1>`
-    //   h1.textContent = data.products[i].title;
       parent.appendChild(div);
-
-      // console.log(data.products[i].title)
     }
   });

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=form, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="login-frm" action="#">
+      <label for="username">username: </label>
+      <input id="username" type="text" />
+      <br />
+      <input type="submit" />
+      <br />
+      <span id="username-txt">Please login</span>
+    </form>
+    <script>
+      usernameTxtBx = document.getElementById("username");
+      usernameLclStr = sessionStorage.getItem("username");
+      usernameSpanTag = document.getElementById("username-txt");
+      if (usernameLclStr !== null) {
+        usernameSpanTag.innerText = usernameLclStr;
+      }
+
+      document.getElementById("login-frm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        usernameSpanTag.innerText = usernameTxtBx.value;
+        sessionStorage.setItem("username", usernameTxtBx.value);
+
+      });
+    </script>
+  </body>
+</html>

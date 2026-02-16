@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Synchronous Blocking Example</title>
+</head>
+<body>
+
+<button onclick="blockUI()">Run Heavy Task</button>
+<button onclick="alert('Clicked!')">Click Me</button>
+
+<script>
+function blockUI() {
+    const start = Date.now();
+    while (Date.now() - start < 5000) {
+        // Blocking for 5 seconds
+    }
+    alert("Heavy task finished");
+}
+</script>
+
+</body>
+</html>

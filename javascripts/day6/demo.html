@@ -1,0 +1,15 @@
+  .then(data => {
+    for(let i = 0; i < data.length; i++) {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.innerHTML = `
+        <img src="https://via.placeholder.com/250x180?text=${data[i].id}" alt="Post Image">
+        <div class="title">${data[i].title}</div>
+        <div class="category">Post #${data[i].id}</div>
+        <p style="font-size: 14px; color: #666; text-align: left; margin: 10px 0;">${data[i].body}</p>
+        <button class="btn">Read More</button>
+      `;
+      document.body.appendChild(card);
+    }
+  })
+  .catch(error => console.error('Error:', error));

@@ -1,3 +1,12 @@
 Practice done
 More practice
 Practice started
+Learned variables
+Practiced let and const
+Learned data types
+Practiced operators
+Learned if else
+Practiced loops
+Learned functions
+Practiced arrays
+Practice completed for today

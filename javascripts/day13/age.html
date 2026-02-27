@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Age Calculator</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#1d2671,#c33764);
+  padding:20px;
+}
+
+.card{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(15px);
+  border-radius:20px;
+  padding:40px;
+  width:100%;
+  max-width:550px;
+  color:#fff;
+  text-align:center;
+  box-shadow:0 15px 35px rgba(0,0,0,0.3);
+  animation:fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+h1{
+  font-size:28px;
+  margin-bottom:20px;
+}
+
+.input-group{
+  display:flex;
+  gap:10px;
+  margin:25px 0;
+}
+
+input{
+  flex:1;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+  cursor:pointer;
+}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  background:#00f5a0;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#00d68f;
+  transform:scale(1.05);
+}
+
+.result-box{
+  margin-top:20px;
+  padding:20px;
+  background:rgba(255,255,255,0.15);
+  border-radius:15px;
+  animation:fadeIn 0.5s ease-in-out;
+}
+
+.result-box p{
+  margin:8px 0;
+  font-size:16px;
+}
+
+.birthday{
+  margin-top:10px;
+  color:#00f5a0;
+  font-weight:bold;
+  font-size:18px;
+}
+
+@media(max-width:480px){
+  .input-group{
+    flex-direction:column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>✨ Advanced Age Calculator</h1>
+
+  <div class="input-group">
+    <input type="date" id="date">
+    <button onclick="calculateAge()">Calculate</button>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<script>
+const userInput = document.getElementById("date");
+const result = document.getElementById("result");
+
+// Prevent future date
+userInput.max = new Date().toISOString().split("T")[0];
+
+// Open calendar on click
+userInput.addEventListener("click", function(){
+  if(this.showPicker){
+    this.showPicker();
+  }
+});
+
+function calculateAge(){
+  if(!userInput.value){
+    result.innerHTML="<p>Please select your birth date.</p>";
+    return;
+  }
+
+  const birthDate = new Date(userInput.value);
+  const today = new Date();
+  today.setHours(0,0,0,0); // Remove time
+
+  // Calculate age
+  let years = today.getFullYear() - birthDate.getFullYear();
+  let months = today.getMonth() - birthDate.getMonth();
+  let days = today.getDate() - birthDate.getDate();
+
+  if(days < 0){
+    months--;
+    const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    days += lastMonth.getDate();
+  }
+
+  if(months < 0){
+    years--;
+    months += 12;
+  }
+
+  // Total days lived
+  const totalDays = Math.max(0, Math.floor((today - birthDate) / (1000 * 60 * 60 * 24)));
+
+  // Next birthday
+  let nextBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+  nextBirthday.setHours(0,0,0,0);
+
+  // If next birthday is today or in past, shift to next year
+  if(nextBirthday <= today){
+      nextBirthday.setFullYear(today.getFullYear() + 1);
+  }
+
+  // Days until next birthday
+  const oneDay = 1000 * 60 * 60 * 24;
+  const daysLeft = Math.ceil((nextBirthday - today) / oneDay);
+
+  // Months & days until next birthday
+  let monthsLeft = nextBirthday.getMonth() - today.getMonth();
+  let daysLeftExact = nextBirthday.getDate() - today.getDate();
+  if(daysLeftExact < 0){
+    monthsLeft--;
+    const lastMonth = new Date(nextBirthday.getFullYear(), nextBirthday.getMonth(), 0);
+    daysLeftExact += lastMonth.getDate();
+  }
+  if(monthsLeft < 0) monthsLeft += 12;
+
+  // Check if birthday is today
+  const isBirthdayToday = birthDate.getDate() === today.getDate() && birthDate.getMonth() === today.getMonth();
+
+  result.innerHTML = `
+    <div class="result-box">
+      <p>🎂 Age: <strong>${years} Years ${months} Months ${days} Days</strong></p>
+      <p>📅 Total Days Lived: <strong>${totalDays}</strong></p>
+      <p>🎉 Days Until Next Birthday: <strong>${daysLeft}</strong></p>
+      ${isBirthdayToday ? '<div class="birthday">🎉 Happy Birthday! 🎉</div>' : ''}
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>

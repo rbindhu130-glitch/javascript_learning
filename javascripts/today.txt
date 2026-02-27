@@ -1,3 +1,4 @@
+
 Practice done
 More practice
 Practice started
@@ -10,3 +11,7 @@ Practiced loops
 Learned functions
 Practiced arrays
 Practice completed for today
+
+
+
+
